@@ -11,7 +11,7 @@ public static class ValueCalculator
         float R, G, B, A;
         float wl = value;
 
-        if (wl >= 0 && wl < 16)
+        if (/*wl >= 0 && */wl < 16)
         {
             R = -1 * (wl - 16) / (16 - 0);
             G = 0;
@@ -41,7 +41,7 @@ public static class ValueCalculator
             G = -1 * (wl - 84) / (84 - 68);
             B = 0;
         }
-        else if (wl >= 84 && wl <= 100)
+        else if (wl >= 84/* && wl <= 100*/)
         {
             R = 1;
             G = 0;
