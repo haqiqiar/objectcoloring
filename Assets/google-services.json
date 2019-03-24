@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "839718675949",
+    "firebase_url": "https://iotunity.firebaseio.com",
+    "project_id": "iotunity",
+    "storage_bucket": "iotunity.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:839718675949:android:b35a6c6f1eb5eb96",
+        "android_client_info": {
+          "package_name": "com.iotunity"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "839718675949-a4ld2mp1mmankrmv8nnan6vfd36qr90j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAA3jyiBxKRHI8Og3p5C5MFIPoJcwfEVyk"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
