@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Firebase;
@@ -13,6 +13,7 @@ public class ObjectColoring : MonoBehaviour
     public Dictionary<string, object> dict = new Dictionary<string, object>();
     public string objectId = "Ob001";
     public string selectedType = "Temperature";
+    public TextMesh t;
 
     public void FetchData()
     {
@@ -55,6 +56,7 @@ public class ObjectColoring : MonoBehaviour
                 {
                     Dictionary<string, object> value = data as Dictionary<string, object>;
                     var hum = float.Parse(value["Value"].ToString());
+                    t.text = value["Value"].ToString() + " " + value["Unit"];
                     res = ValueCalculator.tempToColor(hum);
                 }
                 break;
@@ -63,6 +65,7 @@ public class ObjectColoring : MonoBehaviour
                 {
                     Dictionary<string, object> value = data as Dictionary<string, object>;
                     var temp = float.Parse(value["Value"].ToString());
+                    t.text = value["Value"].ToString() + "°" + value["Unit"];
                     res = ValueCalculator.tempToColor(temp);
                 }
                 break;
@@ -71,6 +74,7 @@ public class ObjectColoring : MonoBehaviour
                 {
                     Dictionary<string, object> value = data as Dictionary<string, object>;
                     var noise = float.Parse(value["Value"].ToString());
+                    t.text = value["Value"].ToString() + " " + value["Unit"];
                     res = ValueCalculator.tempToColor(noise);
                 }
                 break;
@@ -83,6 +87,16 @@ public class ObjectColoring : MonoBehaviour
     {
         rend = GetComponent<Renderer>();
         rend.material.color = Color.white;
+        GameObject text = new GameObject();
+        t = text.AddComponent<TextMesh>();
+        t.transform.localScale = new Vector3(0.05f, 0.05f, 0.05f);
+
+        t.fontSize = 150;
+        t.anchor = TextAnchor.MiddleCenter;
+        t.color = Color.black;
+        t.transform.position = gameObject.transform.position;
+
+        t.transform.position += new Vector3(0f, 0f, -1f);
         FetchData();
     }
 
