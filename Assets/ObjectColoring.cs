@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Firebase;
@@ -14,17 +14,14 @@ public class ObjectColoring : MonoBehaviour
     public string objectId = "Ob001";
     public string selectedType = "Temperature";
 
-    void Start()
+    public void FetchData()
     {
-        rend = GetComponent<Renderer>();
-        rend.material.color = Color.white;
-
         FirebaseApp.DefaultInstance.SetEditorDatabaseUrl("https://iotunity.firebaseio.com/");
         DatabaseReference reference = FirebaseDatabase.DefaultInstance.RootReference;
 
         FirebaseDatabase.DefaultInstance
             .GetReference("Sensors")
-            .OrderByChild("Objects/"+objectId).EqualTo("true")
+            .OrderByChild("Objects/" + objectId).EqualTo("true")
             .GetValueAsync().ContinueWith(task => {
                 if (task.IsFaulted)
                 {
@@ -35,7 +32,7 @@ public class ObjectColoring : MonoBehaviour
                 {
                     DataSnapshot snapshot = task.Result;
                     // Debug.Log(snapshot.GetRawJsonValue());
-                    foreach(DataSnapshot sensor in snapshot.Children)
+                    foreach (DataSnapshot sensor in snapshot.Children)
                     {
                         var values = sensor.Child("Values").Value as Dictionary<string, object>;
                         foreach (var item in values)
@@ -47,8 +44,7 @@ public class ObjectColoring : MonoBehaviour
             });
     }
 
-    // Update is called once per frame
-    void Update()
+    public Color GetColor()
     {
         var res = rend.material.color;
         object data = null;
@@ -80,6 +76,19 @@ public class ObjectColoring : MonoBehaviour
                 break;
         }
 
-        rend.material.color = res;
+        return res;
+    }
+
+    void Start()
+    {
+        rend = GetComponent<Renderer>();
+        rend.material.color = Color.white;
+        FetchData();
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        rend.material.color = GetColor();
     }
 }
