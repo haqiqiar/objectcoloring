@@ -1,11 +1,8 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using SimpleJSON;
 using UnityEngine;
-using Firebase;
-using Firebase.Database;
-using Firebase.Unity.Editor;
-
-
 
 public class ObjectColoring : MonoBehaviour
 {
@@ -15,34 +12,41 @@ public class ObjectColoring : MonoBehaviour
     public string selectedType = "Temperature";
     public TextMesh t;
 
+    public WWW www = null;
+
     public void FetchData()
     {
-        FirebaseApp.DefaultInstance.SetEditorDatabaseUrl("https://iotunity.firebaseio.com/");
-        DatabaseReference reference = FirebaseDatabase.DefaultInstance.RootReference;
 
-        FirebaseDatabase.DefaultInstance
-            .GetReference("Sensors")
-            .OrderByChild("Objects/" + objectId).EqualTo("true")
-            .GetValueAsync().ContinueWith(task => {
-                if (task.IsFaulted)
-                {
-                    // Handle the error...
-                    Debug.Log("handle Error");
-                }
-                else if (task.IsCompleted)
-                {
-                    DataSnapshot snapshot = task.Result;
-                    // Debug.Log(snapshot.GetRawJsonValue());
-                    foreach (DataSnapshot sensor in snapshot.Children)
-                    {
-                        var values = sensor.Child("Values").Value as Dictionary<string, object>;
-                        foreach (var item in values)
-                        {
-                            dict.Add(item.Key, item.Value);
-                        }
-                    }
-                }
-            });
+        var url = "https://iotunity.firebaseio.com/Sensors.json";
+        Debug.Log("testi");
+        www = new WWW(url);
+        Debug.Log("test");
+
+        foreach (DataSnapshot sensor in snapshot.Children)
+        {
+            var values = sensor.Child("Values").Value as Dictionary<string, object>;
+            foreach (var item in values)
+            {
+                dict.Add(item.Key, item.Value);
+            }
+        }
+
+    }
+
+    public class SensorData
+    {
+        public string SensorID;
+    }
+
+    private IEnumerator ReceiveResponse()
+    {
+        yield return www;
+        Debug.Log("testaaa");
+        var a   = JsonUtility.FromJson<object[]>(www.text);
+
+        Debug.Log(a[0] as );
+
+
     }
 
     public Color GetColor()
@@ -97,6 +101,7 @@ public class ObjectColoring : MonoBehaviour
         t.transform.position = gameObject.transform.position;
 
         t.transform.position += new Vector3(0f, 0f, -1f);
+        Debug.Log("lol");
         FetchData();
     }
 
